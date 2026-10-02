@@ -1,0 +1,64 @@
+# One crate, every client: `dx` picks the feature from `--platform`.
+#   web      dx serve --platform web       (wasm32, the dashboard on :5000)
+#   desktop  dx serve --platform desktop   (Windows / macOS / Linux webview)
+#   mobile   dx serve --platform android | ios
+# The client only speaks HTTP to the FoxG wire contract, so it runs against any FoxG backend.
+[package]
+name = "rust-dioxus-client"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "rust_dioxus_client"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rust-dioxus-client"
+path = "src/main.rs"
+
+# Pure logic tests live in the kit's shared tests/ folder, like the backend.
+# Run with `cargo test --no-default-features` (no renderer needed).
+[[test]]
+name = "api_url"
+path = "../tests/frontend/api_url.rs"
+
+[[test]]
+name = "api_error"
+path = "../tests/frontend/api_error.rs"
+
+[dependencies]
+dioxus = { version = "0.7.10", features = ["router"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# wasm32 uses the browser fetch API; native uses hyper + rustls (no OpenSSL to cross-compile).
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+web-sys = { version = "0.3", features = ["Window", "Location", "Storage"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+dirs = "6"
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
+
+# Debug profiles dx uses per platform during `dx serve`.
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"

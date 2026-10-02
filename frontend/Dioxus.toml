@@ -1,0 +1,34 @@
+# dx configuration for every client platform.
+# Commands are wrapped by __ctrl__ (dev run all, native run|build <platform>).
+
+[application]
+name = "Rust-Dioxus"
+# One folder for everything: `asset!()` files are hashed into /assets/, and the same folder is
+# also copied as-is to the web root so the PWA files keep stable URLs (/sw.js, /manifest.webmanifest).
+public_dir = "assets"
+
+[web.app]
+title = "Rust-Dioxus"
+
+# Same-origin API in dev, like the Vite proxy in Rust-Svelte:
+# http://dashboard.localhost/api/... -> http://localhost:8000/api/...
+[[web.proxy]]
+backend = "http://localhost:8000/api/"
+
+[web.watcher]
+watch_path = ["src", "assets", "tailwind.css"]
+index_on_404 = true
+
+[bundle]
+identifier = "rustdioxus.client"
+publisher = "FoxG"
+category = "DeveloperTool"
+short_description = "Rust-Dioxus client"
+long_description = "Rust-Dioxus dashboard client for the FoxG wire contract."
+icon = [
+  "assets/icons/icon-32.png",
+  "assets/icons/icon-128.png",
+  "assets/icons/icon-256.png",
+  "assets/icons/icon-512.png",
+  "assets/favicon.ico",
+]
