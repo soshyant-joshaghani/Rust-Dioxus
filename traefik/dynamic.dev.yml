@@ -1,0 +1,36 @@
+# Dev routes — host processes (dx serve + the Axum API) and TLS for *.localhost.
+
+http:
+  routers:
+    rust-dioxus-backend-host:
+      rule: Host(`api.localhost`)
+      entryPoints:
+        - http
+        - https
+      service: rust-dioxus-backend-host
+    rust-dioxus-frontend-host:
+      rule: Host(`dashboard.localhost`)
+      entryPoints:
+        - http
+        - https
+      service: rust-dioxus-frontend-host
+
+  services:
+    rust-dioxus-backend-host:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:8000
+    rust-dioxus-frontend-host:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:5000
+
+tls:
+  stores:
+    default:
+      defaultGeneratedCert:
+        resolver: default
+        domain:
+          main: localhost
+          sans:
+            - "*.localhost"

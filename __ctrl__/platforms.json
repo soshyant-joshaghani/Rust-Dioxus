@@ -1,0 +1,68 @@
+{
+  "_comment": "Client platforms of frontend/ (one Dioxus crate). `dx` is the platform flag; `hosts` are the OSes that can build it; `package_types` feed `dx bundle --package-types`.",
+  "platforms": [
+    {
+      "id": "web",
+      "label": "Web (wasm)",
+      "dx": "web",
+      "hosts": ["windows", "macos", "linux"],
+      "status": "ready",
+      "package_types": [],
+      "notes": "Dev: dev run all (dx serve on :5000). Prod: compose.yml builds frontend/Dockerfile."
+    },
+    {
+      "id": "desktop",
+      "label": "Desktop (this OS)",
+      "dx": "desktop",
+      "hosts": ["windows", "macos", "linux"],
+      "status": "ready",
+      "package_types": [],
+      "notes": "Alias for windows, macos, or linux, whichever matches the machine."
+    },
+    {
+      "id": "windows",
+      "label": "Windows",
+      "dx": "windows",
+      "hosts": ["windows"],
+      "status": "ready",
+      "package_types": ["msi", "nsis"],
+      "notes": "WebView2 (built into Windows 11). Needs MSVC Build Tools."
+    },
+    {
+      "id": "macos",
+      "label": "macOS",
+      "dx": "macos",
+      "hosts": ["macos"],
+      "status": "ready",
+      "package_types": ["macos", "dmg"],
+      "notes": "WKWebView. Needs Xcode command line tools."
+    },
+    {
+      "id": "linux",
+      "label": "Linux",
+      "dx": "linux",
+      "hosts": ["linux"],
+      "status": "ready",
+      "package_types": ["deb", "appimage", "rpm"],
+      "notes": "WebKitGTK. native setup linux installs libwebkit2gtk-4.1-dev and friends."
+    },
+    {
+      "id": "android",
+      "label": "Android",
+      "dx": "android",
+      "hosts": ["windows", "macos", "linux"],
+      "status": "ready",
+      "package_types": ["apk", "aab"],
+      "notes": "Needs JDK 17+, Android SDK + NDK (ANDROID_HOME, ANDROID_NDK_HOME). adb reverse maps the device's 127.0.0.1:8000 to the host API."
+    },
+    {
+      "id": "ios",
+      "label": "iOS",
+      "dx": "ios",
+      "hosts": ["macos"],
+      "status": "ready",
+      "package_types": ["ios", "ipa"],
+      "notes": "Needs Xcode and a booted simulator (or --device). Signing for devices: --codesign."
+    }
+  ]
+}
