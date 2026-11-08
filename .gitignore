@@ -1,0 +1,16 @@
+.vscode/*
+!.vscode/extensions.json
+.env
+.env.local
+!.env.development
+!.env.production
+.DS_Store
+letsencrypt/
+__pycache__/
+*.pyc
+.venv/
+__ctrl__/.run/
+__ctrl__/logs/
+backend/target/
+frontend/target/
+frontend/dist/
